@@ -1,0 +1,47 @@
+DROP TABLE IF EXISTS tbl_irinput;
+CREATE TABLE IF NOT EXISTS tbl_irinput (
+  nric varchar(100),
+  case_id varchar(30),
+  tax_type number(10),
+  name varchar(30),
+  amount_due number(10,2),
+  appointment_date datetime,
+  release_date datetime,
+  spaces varchar(30)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+create table if not exists TBL_IRAS_FILE_HEADER(
+file_id varchar(50) primary key,
+read_time datetime ,
+complete_time datetime ,
+org_name varchar(4) ,
+trans_date datetime ,
+header_valid varchar(1) ,
+no_of_appt numeric(5) ,
+appt_amount numeric(9,2) ,
+nric_hash numeric(16) ,
+amount_hash numeric(7) ,
+no_of_release numeric(5) ,
+rel_amount numeric(9,2) ,
+trailer_valid varchar(1)) Engine=InnoDB;
+
+
+
+
+create table TBL_IRAS_FILE_DETAILS(
+file_id varchar(50) not null,
+nric varchar(16) ,
+nric_reformat varchar(16) ,
+case_id varchar(9) ,
+tax_type numeric(3) ,
+cust_name varchar(90) ,
+amount_due numeric(9,2) ,
+appt_date datetime ,
+rel_date datetime ,
+file_date datetime ,
+isvalid varchar(1) ,
+error_code numeric(2) ,
+foreign key(file_id) references TBL_IRAS_FILE_HEADER(file_id)) Engine=InnoDB;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+
+<appender name="AMQP" class="org.springframework.amqp.rabbit.logback.AmqpAppender">
+    <layout>
+        <pattern>%X{sessionId} %date [%thread] %-5level %logger{80} - %msg%n</pattern>
+    </layout>
+
+    <host>localhost</host>
+    <port>5672</port>
+    <virtualHost>/</virtualHost>
+    <username>guest</username>
+    <password>guest</password>
+    <exchangeType>topic</exchangeType>
+    <exchangeName>amq.topic</exchangeName>
+    <applicationId>ircpBatch</applicationId>
+    <routingKeyPattern>test</routingKeyPattern>
+    <contentType>text/plain</contentType>
+    <maxSenderRetries>2</maxSenderRetries>
+</appender>
+   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+      <file> logs/rabbitMQ.txt </file>
+      <append>true</append>
+      <encoder>
+         <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+      </encoder>
+   </appender>
+
+		<logger name="com.dbs.cst.ircp.service" level="DEBUG"
+			additivity="true">
+			<appender-ref ref="FILE" />
+			<appender-ref ref="AMQP" />
+		</logger>
+</configuration>
